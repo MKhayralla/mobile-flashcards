@@ -1,0 +1,6 @@
+export const titles = '#404040'
+export const numbers = '#808080'
+export const red = 'rgb(200, 0, 0)'
+export const green = 'rgb(0, 200, 0)'
+export const aquamarine = '#7FFFD4'
+export const mediumaquamarine = '#66CDAA'

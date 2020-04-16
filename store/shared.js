@@ -1,5 +1,15 @@
+/**
+ *
+ *
+ * 
+ async actions to handle data fetching in app components
+ *
+ *
+ * 
+ */
+
 import { receive, add_deck, remove_deck, add_question } from './actions'
-import * as API from '../api'
+import * as API from '../utils/api'
 
 export function receive_data() {
     return (dispatch) => {
