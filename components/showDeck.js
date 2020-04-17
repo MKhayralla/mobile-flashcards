@@ -6,7 +6,11 @@ import mainStyles from '../utils/styles'
 import { titles, mediumaquamarine, aquamarine, red } from '../utils/colors'
 
 const ShowDeck = (props) => {
-    const { deck, remove_deck } = props
+    const { deck, remove_deck, navigation } = props
+    const handle_remove = () => {
+        remove_deck(deck.title)
+        navigation.navigate('home')
+    }
     if (deck) {
         return (
             <View style={mainStyles.container}>
@@ -16,17 +20,17 @@ const ShowDeck = (props) => {
                     </Text>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('quiz', {title : deck.title})}>
                         <Text style={[styles.element, styles.button]}>Take Quiz</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('addQuestion', {title : deck.title})}>
                         <Text style={[styles.element, styles.button]}>Add Question</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity onPress={() => remove_deck(deck.title)}>
+                    <TouchableOpacity onPress={() => handle_remove()}>
                         <Text style={[styles.element, styles.remove]}>
                             Remove Deck
                         </Text>
@@ -74,9 +78,10 @@ const styles = StyleSheet.create(
     }
 )
 
-const mapStateToProps = (state, { title }) => {
+const mapStateToProps = (state, { navigation, route }) => {
+    const title = route.params.title
     const deck = state[title]
-    return { deck }
+    return { deck, navigation }
 }
 const mapDispatchToProps = (dispatch) => {
     const remove_deck = (title) => {

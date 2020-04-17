@@ -5,7 +5,8 @@ import { handle_add_question } from '../store/shared'
 import mainStyles from '../utils/styles'
 import { mediumaquamarine, titles } from '../utils/colors'
 
-const AddDeck = ({ add_question, title }) => {
+const AddQuestion = ({ add_question, route }) => {
+    const title = route.params.title
     const [q, setQuestion] = useState('')
     const [a, setAnswer] = useState('')
     const handle_submit = () => {
@@ -22,7 +23,7 @@ const AddDeck = ({ add_question, title }) => {
             setQuestion('')
             setAnswer('')
         } catch (err) {
-            throw new Error(err)
+            alert(new Error(err).message)
         }
     }
     return (
@@ -77,4 +78,4 @@ const mapDispatchToProps = (dispatch) => {
     return { add_question }
 }
 
-export default connect(undefined, mapDispatchToProps)(AddDeck)
+export default connect(undefined, mapDispatchToProps)(AddQuestion)

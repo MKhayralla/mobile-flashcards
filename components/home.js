@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { receive_data, handle_add_question, handle_delete_deck } from '../store/shared'
 import { titles, numbers, red, aquamarine, mediumaquamarine } from '../utils/colors'
@@ -7,10 +7,11 @@ import mainStyles from '../utils/styles'
 import Add from './addButton'
 
 const Deck = (props) => {
-  const { title, questions } = props
+  const { title, questions, navigation } = props
   const nCards = questions.length
   return (
-    <View style={[mainStyles.row, styles.deckStyles]}>
+    <TouchableOpacity style={[mainStyles.row, styles.deckStyles]}
+    onPress={() => navigation.navigate('details', {title})}>
       <Text style={styles.title}>
         {title}
       </Text>
@@ -22,34 +23,31 @@ const Deck = (props) => {
           cards
       </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
 
 function Home(props) {
-  const { decks, initiate } = props
+  const { decks, initiate, navigation } = props
   useEffect(() => {
     initiate()
   }, [initiate])
-  const renderItem = ({ item }) => (<Deck {...item} />)
+  const renderItem = ({ item }) => (<Deck {...item} navigation={navigation} />)
   return (
     <View style={mainStyles.container}>
-        <FlatList data={decks} renderItem={renderItem} keyExtractor={(item) => item.title} />
-        <Add toDo={() => {}} />
+      <FlatList data={decks} renderItem={renderItem} keyExtractor={(item) => item.title} />
+      <Add toDo={() => { navigation.navigate('addDeck') }} />
     </View>
   );
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, {navigation}) => {
   const decks = Object.values(state)
-  return { decks }
+  return { decks, navigation }
 }
 const mapDispatchToProps = (dispatch) => {
   const initiate = () => dispatch(receive_data())
-  const add_deck = (title) => dispatch(handle_add_deck(title))
-  const remove_deck = (title) => dispatch(handle_delete_deck(title))
-  const add_question = (title, question, answer) => dispatch(handle_add_question(title, question, answer))
-  return { initiate, add_deck, remove_deck, add_question }
+  return { initiate }
 }
 
 

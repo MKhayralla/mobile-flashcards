@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import mainStyles from '../utils/styles'
 import { numbers, red, green } from '../utils/colors'
 
-const Quiz = ({ deck }) => {
+const Quiz = ({ deck, navigation }) => {
     const [index, setIndex] = useState(0)
     const [rightAnswers, setRightAnswers] = useState(0)
     const [answer, showAnswer] = useState(false)
@@ -29,7 +29,7 @@ const Quiz = ({ deck }) => {
                 <Text>
                     No questions Added yet
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('details', {title : deck.title})}>
                     <Text>
                         Go Back to Deck
                     </Text>
@@ -43,7 +43,7 @@ const Quiz = ({ deck }) => {
                 <Text>
                     deck doesn't exist
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('home')}>
                     <Text>Back to Decks</Text>
                 </TouchableOpacity>
             </View>
@@ -53,7 +53,9 @@ const Quiz = ({ deck }) => {
                         result ? (
                             <View style={mainStyles.container}>
                                 <Text>{rightAnswers}/{questions.length}</Text>
-                                <TouchableOpacity><Text>Back to Decks</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate('home')}>
+                                    <Text>Back to Decks</Text>
+                                </TouchableOpacity>
                             </View>
                         ) : (
                                 <View>
@@ -126,9 +128,10 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = (state, { title }) => {
+const mapStateToProps = (state, { route, navigation }) => {
+    const title = route.params.title
     const deck = state[title]
-    return { deck }
+    return { deck, navigation }
 }
 
 export default connect(mapStateToProps)(Quiz)
