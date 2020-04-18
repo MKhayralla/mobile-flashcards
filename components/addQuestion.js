@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { TextInput, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import { TextInput, TouchableOpacity, View, Text, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { handle_add_question } from '../store/shared'
 import mainStyles from '../utils/styles'
-import { mediumaquamarine, titles } from '../utils/colors'
 
 const AddQuestion = ({ add_question, route }) => {
     const title = route.params.title
@@ -11,10 +10,16 @@ const AddQuestion = ({ add_question, route }) => {
     const [a, setAnswer] = useState('')
     const handle_submit = () => {
         if (q.trim() == '') {
-            return alert('you should Enter a question')
+            return Alert.alert('missing question',
+            'you should enter something in the question field',
+            [{text : 'OK'}],
+            {cancelable : true})
         }
         if (a.trim() == '') {
-            return alert('you should Enter an answer')
+            return Alert.alert('missing answer',
+            'you should enter something in the answer field',
+            [{text : 'OK'}],
+            {cancelable : true})
         }
         try {
             const question = q
@@ -22,36 +27,45 @@ const AddQuestion = ({ add_question, route }) => {
             add_question({ title, question, answer })
             setQuestion('')
             setAnswer('')
+            Alert.alert('success',
+            'you successfully added the new question',
+            [{text : 'OK'}],
+            {cancelable : true})
         } catch (err) {
-            alert(new Error(err).message)
+            Alert.alert('Error',
+            new Error(err).message,
+            [{text : 'OK'}],
+            {cancelable : true})
         }
     }
     return (
         <View style={mainStyles.container}>
             <View style={mainStyles.row}>
-                <Text style={{ color: titles }}>
-                    Enter the question
+                <Text style={mainStyles.title}>
+                    Enter the question :
                 </Text>
             </View>
             <View style={mainStyles.row}>
-                <TextInput style={styles.input} value={q}
+                <TextInput style={[mainStyles.inputCommon, mainStyles.textInput]} value={q}
                     onChangeText={(i) => setQuestion(i)}
+                    placeholder="Question ?!"
                 />
             </View>
             <View style={mainStyles.row}>
-                <Text style={{ color: titles }}>
-                    Enter the answer
+                <Text style={mainStyles.title}>
+                    Enter the answer :
                 </Text>
             </View>
             <View style={mainStyles.row}>
-                <TextInput style={styles.input} value={a}
+                <TextInput style={[mainStyles.inputCommon, mainStyles.textInput]} value={a}
                     onChangeText={(i) => setAnswer(i)}
+                    placeholder="Answer .!"
                 />
             </View>
             <View style={mainStyles.row}>
-                <TouchableOpacity style={[styles.input, { backgroundColor: mediumaquamarine }]}
+                <TouchableOpacity style={[mainStyles.inputCommon, mainStyles.button]}
                     onPress={() => handle_submit()}>
-                    <Text style={{ color: '#ffffff', }}>
+                    <Text style={mainStyles.buttonText}>
                         Add Question
                     </Text>
                 </TouchableOpacity>
@@ -62,15 +76,6 @@ const AddQuestion = ({ add_question, route }) => {
 
 
 
-const styles = StyleSheet.create({
-    input: {
-        flex: 1,
-        marginTop: 5,
-        padding: 2,
-        justifyContent: 'center',
-        height: 30,
-    }
-})
 
 
 const mapDispatchToProps = (dispatch) => {

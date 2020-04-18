@@ -9,7 +9,7 @@ import AddQuestion from './components/addQuestion'
 import Quiz from './components/takeQuiz'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { mediumaquamarine } from './utils/colors'
+import colors from './utils/colors'
 
 const Stack = createStackNavigator()
 
@@ -22,12 +22,11 @@ export default function App() {
         screenOptions={
           {
             headerStyle : {
-              backgroundColor : mediumaquamarine,
+              backgroundColor : colors.dark,
             },
-            headerTintColor : '#ffffff',
+            headerTintColor : colors.white,
             headerTitleStyle : {
               fontWeight : 'bold',
-              textAlign : 'center'
             }
           }
         }>

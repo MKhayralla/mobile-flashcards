@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { handle_delete_deck } from '../store/shared'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import mainStyles from '../utils/styles'
-import { titles, mediumaquamarine, aquamarine, red } from '../utils/colors'
 
 const ShowDeck = (props) => {
     const { deck, remove_deck, navigation } = props
@@ -15,23 +14,29 @@ const ShowDeck = (props) => {
         return (
             <View style={mainStyles.container}>
                 <View style={mainStyles.row}>
-                    <Text style={[styles.element, styles.title]}>
+                    <Text style={mainStyles.title}>
                         {deck.title}
                     </Text>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity onPress={() => navigation.navigate('quiz', {title : deck.title})}>
-                        <Text style={[styles.element, styles.button]}>Take Quiz</Text>
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('quiz', {title : deck.title})}
+                    style={[mainStyles.inputCommon, mainStyles.button]}>
+                        <Text style={mainStyles.buttonText}>Take Quiz</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity onPress={() => navigation.navigate('addQuestion', {title : deck.title})}>
-                        <Text style={[styles.element, styles.button]}>Add Question</Text>
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('addQuestion', {title : deck.title})}
+                    style={[mainStyles.inputCommon, mainStyles.button]}>
+                        <Text style={mainStyles.buttonText}>Add Question</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={mainStyles.row}>
-                    <TouchableOpacity onPress={() => handle_remove()}>
-                        <Text style={[styles.element, styles.remove]}>
+                    <TouchableOpacity
+                    onPress={() => handle_remove()}
+                    style={[mainStyles.redButtonFrame, mainStyles.redButton, {flex : 1}]}>
+                        <Text style={mainStyles.redButtonText}>
                             Remove Deck
                         </Text>
                     </TouchableOpacity>
@@ -45,38 +50,6 @@ const ShowDeck = (props) => {
     }
 
 }
-const styles = StyleSheet.create(
-    {
-        element: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 30,
-            padding: 5,
-        },
-        title: {
-            color: titles,
-            fontFamily: 'Arial',
-            fontSize: 22,
-            textAlign: 'center'
-        },
-        button: {
-            backgroundColor: mediumaquamarine,
-            borderBottomColor: aquamarine,
-            borderBottomWidth: 1,
-            color: '#ffffff',
-            fontSize: 20,
-        },
-        remove: {
-            backgroundColor: red,
-            color: aquamarine,
-            borderWidth: 1,
-            borderRadius: 5,
-            borderColor: mediumaquamarine,
-            fontSize: 20,
-        },
-    }
-)
 
 const mapStateToProps = (state, { navigation, route }) => {
     const title = route.params.title

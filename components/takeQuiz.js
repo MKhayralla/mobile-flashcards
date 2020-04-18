@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import mainStyles from '../utils/styles'
-import { numbers, red, green } from '../utils/colors'
 
 const Quiz = ({ deck, navigation }) => {
     const [index, setIndex] = useState(0)
@@ -26,44 +25,52 @@ const Quiz = ({ deck, navigation }) => {
     if (questions && questions.length < 1) {
         return (
             <View style={mainStyles.container}>
-                <Text>
-                    No questions Added yet
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('details', {title : deck.title})}>
-                    <Text>
-                        Go Back to Deck
-                    </Text>
-                </TouchableOpacity>
+                <View style={mainStyles.card}>
+                    <Text style={mainStyles.cardText}>No questions Added yet</Text>
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('details', {title : deck.title})}
+                    style={[mainStyles.inputCommon, mainStyles.button, {maxHeight : 60}]}>
+                        <Text style={mainStyles.buttonText}>Go Back to Deck</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
     return (
         !questions ? (
-            <View style={mainStyles.container}>
-                <Text>
+            <View style={[mainStyles.container, mainStyles.card]}>
+                <Text style={mainStyles.cardText}>
                     deck doesn't exist
                 </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('home')}>
-                    <Text>Back to Decks</Text>
+                <TouchableOpacity
+                onPress={() => navigation.navigate('home')}
+                style={[mainStyles.inputCommon, mainStyles.button, {maxHeight : 60}]}>
+                    <Text style={mainStyles.buttonText}>Back to Decks</Text>
                 </TouchableOpacity>
             </View>
         ) : (
                 <View style={mainStyles.container}>
                     {
                         result ? (
-                            <View style={mainStyles.container}>
-                                <Text>{rightAnswers}/{questions.length}</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate('home')}>
-                                    <Text>Back to Decks</Text>
+                            <View style={mainStyles.card}>
+                                <Text
+                                style={mainStyles.cardText}>
+                                    {`your result is :\n${rightAnswers}/${questions.length}(${Math.round(rightAnswers/questions.length*100)}%)\n`}
+                                </Text>
+                                <TouchableOpacity
+                                onPress={() => navigation.navigate('home')}
+                                style={[mainStyles.inputCommon, mainStyles.button, {maxHeight : 60}]}>
+                                    <Text style={mainStyles.buttonText}>Back to Decks</Text>
                                 </TouchableOpacity>
                             </View>
                         ) : (
-                                <View>
+                                <View style={mainStyles.card}>
                                     {
                                         (!answer) ? (
                                             <TouchableOpacity
-                                                onPress={() => showAnswer(true)}>
-                                                <Text style={styles.questionBody}>
+                                                onPress={() => showAnswer(true)}
+                                                style={{flex : 1, alignItems : 'center', justifyContent : 'center',}}>
+                                                <Text style={mainStyles.cardText}>
                                                     {
                                                         questions[index].question
                                                     }
@@ -72,25 +79,30 @@ const Quiz = ({ deck, navigation }) => {
                                         ) : (
                                                 <View>
                                                     <TouchableOpacity
-                                                        onPress={() => showAnswer(false)}>
-                                                        <Text style={styles.questionBody}>
+                                                        onPress={() => showAnswer(false)}
+                                                        style={{flex : 1, alignItems : 'center', justifyContent : 'center',}}>
+                                                        <Text style={mainStyles.cardText}>
                                                             {
                                                                 questions[index].answer + '\nwas your guess right ?'
                                                             }
                                                         </Text>
                                                     </TouchableOpacity>
-                                                    <View style={mainStyles.row}>
+                                                    <View style={[mainStyles.row, {alignSelf : 'baseline'}]}>
                                                         <TouchableOpacity
                                                             onPress={() => check_index(true)}
-                                                            style={[styles.button, styles.green]}>
-                                                            <Text style={styles.buttonText}>
+                                                            style={[mainStyles.greenButtonFrame,
+                                                            mainStyles.greenButton,
+                                                            {flex : 0.5}]}>
+                                                            <Text style={mainStyles.greenButtonText}>
                                                                 Yes
                                                         </Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity
                                                             onPress={() => check_index(false)}
-                                                            style={[styles.button, styles.red]}>
-                                                            <Text style={styles.buttonText}>
+                                                            style={[mainStyles.redButtonFrame,
+                                                                mainStyles.redButton,
+                                                                {flex : 0.5}]}>
+                                                            <Text style={mainStyles.greenButtonText}>
                                                                 No
                                                         </Text>
                                                         </TouchableOpacity>
@@ -106,27 +118,6 @@ const Quiz = ({ deck, navigation }) => {
     )
 }
 
-const styles = StyleSheet.create({
-    button: {
-        flex: 0.5,
-        height: 30,
-        alignItems : 'center',
-        padding : 5,
-    },
-    buttonText: {
-        color: '#ffffff',
-    },
-    red: {
-        backgroundColor: red,
-    },
-    green: {
-        backgroundColor: green,
-    },
-    questionBody: {
-        fontSize: 28,
-        color: numbers,
-    }
-})
 
 const mapStateToProps = (state, { route, navigation }) => {
     const title = route.params.title

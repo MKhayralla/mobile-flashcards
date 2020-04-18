@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Platform } from 'react-native'
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons'
 import { connect } from 'react-redux'
-import { receive_data, handle_add_question, handle_delete_deck } from '../store/shared'
-import { titles, numbers, red, aquamarine, mediumaquamarine } from '../utils/colors'
+import { receive_data } from '../store/shared'
+import colors from '../utils/colors'
 import mainStyles from '../utils/styles'
 import Add from './addButton'
 
@@ -10,20 +11,20 @@ const Deck = (props) => {
   const { title, questions, navigation } = props
   const nCards = questions.length
   return (
-    <TouchableOpacity style={[mainStyles.row, styles.deckStyles]}
-    onPress={() => navigation.navigate('details', {title})}>
-      <Text style={styles.title}>
-        {title}
-      </Text>
-      <View style={styles.counter}>
-        <Text style={styles.number}>
-          {nCards}
+    <View style={mainStyles.row}>
+      <TouchableOpacity style={mainStyles.inputCommon}
+        onPress={() => navigation.navigate('details', { title })}>
+        <Text style={[mainStyles.title, { flex: 0.7 }]}>
+          {title}
         </Text>
-        <Text style={styles.bodyText}>
-          cards
-      </Text>
-      </View>
-    </TouchableOpacity>
+        <View style={styles.counter}>
+          <Text style={styles.number}>
+            {nCards}
+          </Text>
+          <Icon name={Platform.OS === 'ios' ? 'cards-outline' : 'cards'} style={styles.bodyText} />
+        </View>
+      </TouchableOpacity>
+    </View>
   )
 }
 
@@ -37,7 +38,7 @@ function Home(props) {
   return (
     <View style={mainStyles.container}>
       <FlatList data={decks} renderItem={renderItem} keyExtractor={(item) => item.title} />
-      <Add toDo={() => { navigation.navigate('addDeck') }} />
+      <View style={{flexDirection : 'row-reverse'}}><Add toDo={() => { navigation.navigate('addDeck') }} /></ View>
     </View>
   );
 }
@@ -52,42 +53,27 @@ const mapDispatchToProps = (dispatch) => {
 
 
 const styles = StyleSheet.create({
-  deckStyles: {
-    shadowColor: mediumaquamarine,
-    shadowOffset: {
-      width: 3,
-      height: 1,
-    },
-    shadowOpacity: 0.3
-  },
-  title: {
-    fontSize: 20,
-    color: titles,
-    flex: 0.8,
-    paddingLeft: 5,
-  },
   counter: {
-    flex: 0.2,
+    flex: 0.3,
     flexDirection: 'column',
-    borderWidth: 1,
-    borderColor: aquamarine,
-    borderRadius: '60%',
+    borderLeftWidth: 1,
+    borderColor: colors.dark,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 2,
+    padding: 3,
   },
   number: {
-    fontFamily: 'Arial',
-    textShadowColor: titles,
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: numbers,
-    flex: 0.6,
-  },
-  bodyText: {
-    color: red,
-    fontSize: 18,
+    color: colors.dark,
     flex: 0.4,
   },
-});
+  bodyText: {
+    color: colors.dark,
+    fontSize: 18,
+    flex: 0.6,
+  },
+})
+
+
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
