@@ -15,7 +15,7 @@ const ShowDeck = (props) => {
             <View style={mainStyles.container}>
                 <View style={mainStyles.row}>
                     <Text style={mainStyles.title}>
-                        {deck.title}
+                        {`${deck.title} [${deck.questions.length} cards]`}
                     </Text>
                 </View>
                 <View style={mainStyles.row}>
@@ -29,7 +29,7 @@ const ShowDeck = (props) => {
                     <TouchableOpacity
                     onPress={() => navigation.navigate('addQuestion', {title : deck.title})}
                     style={[mainStyles.inputCommon, mainStyles.button]}>
-                        <Text style={mainStyles.buttonText}>Add Question</Text>
+                        <Text style={mainStyles.buttonText}>Add Card</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={mainStyles.row}>

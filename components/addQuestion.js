@@ -41,20 +41,10 @@ const AddQuestion = ({ add_question, route }) => {
     return (
         <View style={mainStyles.container}>
             <View style={mainStyles.row}>
-                <Text style={mainStyles.title}>
-                    Enter the question :
-                </Text>
-            </View>
-            <View style={mainStyles.row}>
                 <TextInput style={[mainStyles.inputCommon, mainStyles.textInput]} value={q}
                     onChangeText={(i) => setQuestion(i)}
                     placeholder="Question ?!"
                 />
-            </View>
-            <View style={mainStyles.row}>
-                <Text style={mainStyles.title}>
-                    Enter the answer :
-                </Text>
             </View>
             <View style={mainStyles.row}>
                 <TextInput style={[mainStyles.inputCommon, mainStyles.textInput]} value={a}

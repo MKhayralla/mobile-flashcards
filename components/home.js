@@ -6,6 +6,7 @@ import { receive_data } from '../store/shared'
 import colors from '../utils/colors'
 import mainStyles from '../utils/styles'
 import Add from './addButton'
+import { setLocalNotification } from '../utils/notifications'
 
 const Deck = (props) => {
   const { title, questions, navigation } = props
@@ -32,7 +33,9 @@ const Deck = (props) => {
 function Home(props) {
   const { decks, initiate, navigation } = props
   useEffect(() => {
-    initiate()
+    setLocalNotification()
+    .then(initiate)
+    .catch()
   }, [initiate])
   const renderItem = ({ item }) => (<Deck {...item} navigation={navigation} />)
   return (
